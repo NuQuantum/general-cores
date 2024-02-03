@@ -1,0 +1,21 @@
+CAPI=2:
+name: ohwr:general-cores:wb_simple_uart
+description: Wishbone UART
+
+filesets:
+  rtl:
+    files:
+      - wishbone/wb_uart/uart_async_rx.vhd
+      - wishbone/wb_uart/uart_async_tx.vhd
+      - wishbone/wb_uart/uart_baud_gen.vhd
+      - wishbone/wb_uart/simple_uart_wb.vhd
+      - wishbone/wb_uart/simple_uart_pkg.vhd
+      - wishbone/wb_uart/wb_simple_uart.vhd
+      - wishbone/wb_uart/xwb_simple_uart.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+

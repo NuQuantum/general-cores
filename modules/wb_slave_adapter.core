@@ -1,0 +1,18 @@
+CAPI=2:
+name: ohwr:general-cores:wb_slave_adapter
+description: Wishbone Slave Adapter
+
+filesets:
+  rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
+    files:
+      - wishbone/wb_slave_adapter/wb_slave_adapter.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
+      
