@@ -1,0 +1,17 @@
+CAPI=2:
+name: ohwr:general-cores:wb_crossbar
+description: Wishbone crossbar
+
+filesets:
+  rtl:
+    files:
+      - wishbone/wb_crossbar/sdb_rom.vhd
+      - wishbone/wb_crossbar/xwb_crossbar.vhd
+      - wishbone/wb_crossbar/xwb_sdb_crossbar.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+

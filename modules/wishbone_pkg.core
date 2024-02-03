@@ -1,0 +1,16 @@
+CAPI=2:
+name: ohwr:general-cores:wishbone_pkg
+description: Wishbone VHDL Package
+
+filesets:
+  rtl:
+    files:
+      - wishbone/wishbone_pkg.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
+      
