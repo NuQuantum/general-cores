@@ -1,0 +1,16 @@
+CAPI=2:
+name: ohwr:general-cores:genram_pkg
+description: GenRAM VHDL Package
+
+filesets:
+  rtl:
+    files:
+      - genrams/genram_pkg.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
+    

@@ -1,0 +1,69 @@
+CAPI=2:
+name: ohwr:general-cores:genram
+description: RAMs
+
+# REVISIT: do the virtex6 devices need to be supported and if so, what flag
+# do they map to?  Can we rely on a simple ISE vs Vivado switch?
+filesets:
+  common:
+    depend:
+      - ohwr:general-cores:genram_pkg
+      - ohwr:general-cores:memory_loader_pkg
+    files:
+      - genrams/common/inferred_sync_fifo.vhd
+      - genrams/common/inferred_async_fifo_dual_rst.vhd
+      - genrams/common/inferred_async_fifo.vhd
+      - genrams/common/generic_shiftreg_fifo.vhd
+    file_type: vhdlSource
+  cheby:
+    depend:
+      - ohwr:general-cores:genram_pkg
+      - ohwr:general-cores:memory_loader_pkg
+    files:
+      - genrams/cheby/cheby_pkg.vhd
+      - genrams/cheby/cheby_dpssram.vhd
+    file_type: vhdlSource
+  virtex6:
+    depend:
+      - ohwr:general-cores:genram_pkg
+      - ohwr:general-cores:memory_loader_pkg
+    files:
+      - genrams/xilinx/virtex6/v6_fifo_pkg.vhd
+      - genrams/xilinx/virtex6/v6_hwfifo_wrapper.vhd
+      - genrams/xilinx/virtex6/generic_async_fifo.vhd
+      - genrams/xilinx/virtex6/generic_async_fifo_dual_rst.vhd
+      - genrams/xilinx/virtex6/generic_sync_fifo.vhd
+    file_type: vhdlSource
+  xilinx:
+    depend:
+      - ohwr:general-cores:genram_pkg
+      - ohwr:general-cores:memory_loader_pkg
+    files:
+      - genrams/xilinx/generic_dpram.vhd
+      - genrams/xilinx/generic_dpram_sameclock.vhd
+      - genrams/xilinx/generic_dpram_dualclock.vhd
+      - genrams/xilinx/generic_simple_dpram.vhd
+      - genrams/xilinx/generic_dpram_split.vhd
+      - genrams/xilinx/generic_spram.vhd
+      - genrams/xilinx/gc_shiftreg.vhd
+    file_type: vhdlSource
+  generic:
+    depend:
+      - ohwr:general-cores:genram_pkg
+      - ohwr:general-cores:memory_loader_pkg
+    files:
+      - genrams/generic/generic_async_fifo_dual_rst.vhd
+      - genrams/generic/generic_async_fifo.vhd
+      - genrams/generic/generic_sync_fifo.vhd
+      - genrams/generic/generic_async_fifo_mixedw.vhd
+    file_type: vhdlSource
+  
+targets:
+  default: &default
+    filesets:
+      - common
+      - cheby
+      - tool_vivado ? (xilinx)
+      - tool_ise ? (xilinx)
+      - tool_ise ? (virtex6)
+      - "!tool_ise ? (generic)"

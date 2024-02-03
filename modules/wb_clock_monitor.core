@@ -1,0 +1,17 @@
+CAPI=2:
+name: ohwr:general-cores:wb_clock_monitor
+description: Wishbone Clock Monitor
+
+filesets:
+  rtl:
+    files:
+      - wishbone/wb_clock_monitor/clock_monitor_wbgen2_pkg.vhd
+      - wishbone/wb_clock_monitor/clock_monitor_wb.vhd
+      - wishbone/wb_clock_monitor/xwb_clock_monitor.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: wb_clock_monitor
