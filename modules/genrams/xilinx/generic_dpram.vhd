@@ -50,7 +50,9 @@ entity generic_dpram is
     g_init_file                : string  := "";
     g_dual_clock               : boolean := true;
     g_fail_if_file_not_found   : boolean := true;
-    g_implementation_hint      : string  := "auto"
+    g_implementation_hint      : string  := "auto";
+    g_fpga_family              : string  := "kintex7";
+    g_use_bram_macros          : boolean := false
     );
 
   port (
@@ -79,11 +81,14 @@ end generic_dpram;
 
 architecture syn of generic_dpram is
 
-  constant c_gen_split :boolean := (g_dual_clock = false and g_data_width=32 and
-      g_with_byte_enable=true and (g_addr_conflict_resolution="dont_care" or
-      g_addr_conflict_resolution="read_first"));
-  constant c_gen_sc    :boolean := (not c_gen_split) and (not g_dual_clock);
-  constant c_gen_dc    :boolean := g_dual_clock;
+  constant c_gen_split    :boolean := (g_dual_clock = false and g_data_width=32
+      and g_with_byte_enable=true and (g_addr_conflict_resolution="dont_care" or
+      g_addr_conflict_resolution="read_first") and (not g_use_bram_macros));
+  constant c_gen_sc       :boolean := (not c_gen_split) and (not g_dual_clock)
+      and (not g_use_bram_macros);
+  constant c_gen_dc       :boolean := g_dual_clock and (not g_use_bram_macros);
+  constant c_gen_sc_macro :boolean := g_use_bram_macros and (not g_dual_clock);
+  constant c_gen_dc_macro :boolean := g_use_bram_macros and g_dual_clock;
 
   component generic_dpram_split
     generic (
@@ -135,6 +140,33 @@ architecture syn of generic_dpram is
 
   component generic_dpram_dualclock
     generic (
+      g_data_width               : natural;
+      g_size                     : natural;
+      g_with_byte_enable         : boolean;
+      g_addr_conflict_resolution : string;
+      g_init_file                : string;
+      g_fail_if_file_not_found   : boolean;
+      g_implementation_hint      : string
+      );
+    port (
+      rst_n_i : in  std_logic := '1';
+      clka_i  : in  std_logic;
+      bwea_i  : in  std_logic_vector((g_data_width+7)/8-1 downto 0);
+      wea_i   : in  std_logic;
+      aa_i    : in  std_logic_vector(f_log2_size(g_size)-1 downto 0);
+      da_i    : in  std_logic_vector(g_data_width-1 downto 0);
+      qa_o    : out std_logic_vector(g_data_width-1 downto 0);
+      clkb_i  : in  std_logic;
+      bweb_i  : in  std_logic_vector((g_data_width+7)/8-1 downto 0);
+      web_i   : in  std_logic;
+      ab_i    : in  std_logic_vector(f_log2_size(g_size)-1 downto 0);
+      db_i    : in  std_logic_vector(g_data_width-1 downto 0);
+      qb_o    : out std_logic_vector(g_data_width-1 downto 0));
+  end component;
+
+  component generic_dpram_inst_7series
+    generic (
+      g_fpga_family              : string;
       g_data_width               : natural;
       g_size                     : natural;
       g_with_byte_enable         : boolean;
@@ -243,5 +275,59 @@ begin
         db_i    => db_i,
         qb_o    => qb_o);
   end generate gen_dual_clk;
+
+  gen_single_clk_macro : if c_gen_sc_macro generate
+  U_RAM_SC_MACRO: generic_dpram_inst_7series
+    generic map (
+      g_data_width               => g_data_width,
+      g_size                     => g_size,
+      g_with_byte_enable         => g_with_byte_enable,
+      g_addr_conflict_resolution => g_addr_conflict_resolution,
+      g_init_file                => g_init_file,
+      g_fail_if_file_not_found   => g_fail_if_file_not_found,
+      g_implementation_hint      => g_implementation_hint,
+      g_fpga_family              => g_fpga_family)
+    port map (
+      rst_n_i => rst_n_i,
+      clka_i  => clka_i,
+      bwea_i  => bwea_i,
+      wea_i   => wea_i,
+      aa_i    => aa_i,
+      da_i    => da_i,
+      qa_o    => qa_o,
+      clkb_i  => clka_i,
+      bweb_i  => bweb_i,
+      web_i   => web_i,
+      ab_i    => ab_i,
+      db_i    => db_i,
+      qb_o    => qb_o);
+  end generate gen_single_clk_macro;
+
+  gen_dual_clk_macro : if c_gen_dc_macro generate
+    U_RAM_DC_MACRO: generic_dpram_inst_7series
+      generic map (
+        g_data_width               => g_data_width,
+        g_size                     => g_size,
+        g_with_byte_enable         => g_with_byte_enable,
+        g_addr_conflict_resolution => g_addr_conflict_resolution,
+        g_init_file                => g_init_file,
+        g_fail_if_file_not_found   => g_fail_if_file_not_found,
+        g_implementation_hint      => g_implementation_hint,
+        g_fpga_family              => g_fpga_family)
+      port map (
+        rst_n_i => rst_n_i,
+        clka_i  => clka_i,
+        bwea_i  => bwea_i,
+        wea_i   => wea_i,
+        aa_i    => aa_i,
+        da_i    => da_i,
+        qa_o    => qa_o,
+        clkb_i  => clkb_i,
+        bweb_i  => bweb_i,
+        web_i   => web_i,
+        ab_i    => ab_i,
+        db_i    => db_i,
+        qb_o    => qb_o);
+  end generate gen_dual_clk_macro;
 
 end syn;

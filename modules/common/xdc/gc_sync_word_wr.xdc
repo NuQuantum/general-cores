@@ -4,8 +4,8 @@
 
 set src_clk [get_clocks -of_objects [get_ports clk_in_i]]
 set dst_clk [get_clocks -of_objects [get_ports clk_out_i]]
-set src_clk_period [get_property PERIOD $src_clk]
-set dst_clk_period [get_property PERIOD $dst_clk]
+set src_clk_period [get_property -min PERIOD $src_clk]
+set dst_clk_period [get_property -min PERIOD $dst_clk]
 set skew_value [expr {(($src_clk_period < $dst_clk_period) ? $src_clk_period : $dst_clk_period)}]
 
 set src_ff [get_pins gc_sync_word_data*[*]/C]

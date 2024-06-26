@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# Copyright (C) 2024 CERN
+
+ccflags-y += -DGIT_VERSION=\"$(GIT_VERSION)\"
+ccflags-y += -Wall -Werror
+ccflags-y += -I$(src)/../include
+
+obj-m := wb_uart.o
+
+wb-uart-objs := wb_uart.o
+
+# priority to our local headers (avoid conflict with the version in kernel)
+LINUXINCLUDE := -I$(src)/../include $(LINUXINCLUDE)
+LINUXINCLUDE := -I$(src)/../include/linux $(LINUXINCLUDE)

@@ -85,7 +85,7 @@ begin
   S_AXI_awsize <= "010";
 
   --  Normal Non-cacheable Non-bufferable
-  S_AXI_awcache <= "0010";
+  S_AXI_awcache <= "0001"; -- 0001 is device, 0000 is strongly-ordered
 
   --  Reuse the same id.
   S_AXI_awid <= "000000";

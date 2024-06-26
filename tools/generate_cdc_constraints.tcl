@@ -270,7 +270,7 @@ proc generate_gc_reset_multi_aasd_constraints { f_out } {
 }
 
 proc generate_gc_falsepath_waiver_constraints { f_out } {
-    set the_cells [ get_cells -hier -filter { REF_NAME=~gc_falsepath_waiver* } ]
+    set the_cells [ get_cells -hier -filter { REF_NAME==gc_falsepath_waiver || ORIG_REF_NAME==gc_falsepath_waiver} ]
     set count 0
 
     foreach cell $the_cells {

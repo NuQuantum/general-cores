@@ -91,7 +91,9 @@ package genram_pkg is
       g_init_file                : string  := "none";
       g_fail_if_file_not_found   : boolean := true;
       g_dual_clock               : boolean := true;
-      g_implementation_hint      : string  := "auto"
+      g_implementation_hint      : string  := "auto";
+      g_fpga_family              : string  := "kintex7";
+      g_use_bram_macros          : boolean := false
       );
     port (
       rst_n_i : in  std_logic := '1';

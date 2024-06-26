@@ -84,6 +84,9 @@ In [modules/common](modules/common) there are general purpose cores:
 * Module [gc_bicolor_led_ctrl](modules/common/gc_bicolor_led_ctrl.vhd)
   controls multiple bicolor leds, including the intensity.
 
+* Module [gc_argb_led_drv](modules/common/gc_argb_led_drv.vhd)
+  controls one or several ARGB (aka intelligent) leds.
+
 * Module [gc_big_adder](modules/common/gc_big_adder.vhd) provides a pipelined
   adder for wide numbers.
 

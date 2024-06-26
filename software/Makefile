@@ -5,6 +5,7 @@
 DIRS := i2c-ocores
 DIRS += spi-ocores
 DIRS += htvic
+DIRS += wb_uart
 
 .PHONY: all clean modules install modules_install gtags
 
