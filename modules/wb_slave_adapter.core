@@ -14,5 +14,6 @@ targets:
   default: &default
     filesets:
       - rtl
+    toplevel: wb_slave_adapter
 
       
