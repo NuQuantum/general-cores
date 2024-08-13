@@ -283,7 +283,6 @@ package body memory_loader_pkg is
     variable tmp_bv : bit_vector(31 downto 0);
     variable mem: t_ram8_type(0 to mem_size-1) := (others => (others => '0'));
     variable status   : file_open_status;
-    variable good_lines, extra_lines : integer := 0;
   begin
     if f_empty_file_name(file_name) then
       return mem;
@@ -298,7 +297,6 @@ package body memory_loader_pkg is
         readline (f_in, l);
         -- read function gives us bit_vector
         read (l, tmp_bv);
-        good_lines := good_lines + 1;
       else
         tmp_bv := (others => '0');
       end if;
@@ -306,15 +304,7 @@ package body memory_loader_pkg is
     end loop;
 
     if not endfile(f_in) then
-      while not endfile(f_in) loop
-        readline (f_in, l);
-        extra_lines := extra_lines + 1;
-      end loop;
-
-      report "f_load_mem_from_file(): file '" & file_name &
-             "' is bigger than available memory. read " & integer'image(good_lines) &
-             " good lines. There were " & integer'image(extra_lines) & " extra lines";
-      --assert false severity WARNING;
+      report "f_load_mem_from_file(): file '"&file_name&"' is bigger than available memory" severity FAILURE;
     end if;
 
     file_close(f_in);

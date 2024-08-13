@@ -179,7 +179,6 @@ architecture syn of generic_dpram_inst_7series is
       when  3 to  4 => ret :=  8192;
       when  2       => ret := 16384;
       when  1       => ret := 32768;
-      when others   => ret :=   512;
     end case;
 
     if f_lookup_bram_size = "18Kb" then
@@ -200,7 +199,6 @@ architecture syn of generic_dpram_inst_7series is
       when  3 to  4 => ret := 1;
       when  2       => ret := 1;
       when  1       => ret := 1;
-      when others   => ret := 1;
     end case;
     return ret;
   end f_lookup_bram_web_size;
