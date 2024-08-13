@@ -4,8 +4,9 @@ description: Wishbone Slave Adapter
 
 filesets:
   rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
     files:
-      - wishbone/wishbone_pkg.vhd
       - wishbone/wb_slave_adapter/wb_slave_adapter.vhd
     file_type: vhdlSource
 
@@ -13,16 +14,5 @@ targets:
   default: &default
     filesets:
       - rtl
-    toplevel: wb_slave_adapter
 
-  synth:
-    <<: *default
-    default_tool: vivado
-    tools:
-      ise:
-        family: spartan6
-        device: xc6slx45t
-        package: fgg484
-        speed: -3
-      vivado:
-        part: xc7z030ffg676-3
+      
