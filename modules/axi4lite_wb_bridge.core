@@ -1,0 +1,18 @@
+CAPI=2:
+name: ohwr:general-cores:axi4lite_wb_bridge
+description: Axi4 lite to wishbone bridge
+
+filesets:
+  rtl:
+    depend:
+      - ohwr:general-cores:axi4_pkg
+      - ohwr:general-cores:wishbone_pkg
+    files:
+      - axi/axi4lite_wb_bridge/xaxi4lite_wb_bridge.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
