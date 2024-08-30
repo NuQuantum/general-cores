@@ -34,6 +34,7 @@
 -- 2010-02-25  1.1      twlostow        Modified for rev 1.1 switch
 -- 2016-08-24  1.2      jpospisi        removed synchronous reset from
 --                                        sensitivity lists
+-- 2023-11-29  1.3      lihm             added select to support
 -------------------------------------------------------------------------------
 
 library IEEE;
@@ -76,6 +77,7 @@ entity gc_serial_dac is
     dac_cs_n_o  : out std_logic_vector(g_num_cs_select-1 downto 0);
     dac_sclk_o  : out std_logic;
     dac_sdata_o : out std_logic;
+    dac_sel_i   : in  std_logic_vector(2 downto 0) := "000";
 
 -- when 1, the SPI interface is busy sending data to the DAC.
     busy_o : out std_logic
@@ -96,6 +98,8 @@ architecture syn of gc_serial_dac is
   signal divider_muxed : std_logic;
 
   signal cs_sel_reg : std_logic_vector(g_num_cs_select-1 downto 0);
+
+  signal dac_sel  : std_logic_vector(2 downto 0);
   
 begin
 
@@ -170,13 +174,26 @@ begin
   process(clk_i)
   begin
     if rising_edge(clk_i) then
+      dac_sel <= dac_sel_i;
+    end if;
+  end process;
+
+  process(clk_i)
+  begin
+    if rising_edge(clk_i) then
       if rst_n_i = '0' then
         dataSh <= (others => '0');
       else
         if iValidValue = '1' and sendingData = '0' then
           cs_sel_reg                                 <= cs_sel_i;
-          dataSh(g_num_data_bits-1 downto 0)         <= value_i;
-          dataSh(dataSh'left downto g_num_data_bits) <= (others => '0');
+          if(dac_sel = b"001") then -- AD5683R
+            dataSh(dataSh'left downto g_num_data_bits+4)<= "0011";
+            dataSh(g_num_data_bits+4-1 downto 4)        <= value_i;
+            dataSh(3 downto 0)                          <= (others => '0');
+          else -- AD5662
+            dataSh(g_num_data_bits-1 downto 0)         <= value_i;
+            dataSh(dataSh'left downto g_num_data_bits) <= (others => '0');
+          end if;
         elsif sendingData = '1' and divider_muxed = '1' and iDacClk = '0' then
           dataSh(0)                    <= dataSh(dataSh'left);
           dataSh(dataSh'left downto 1) <= dataSh(dataSh'left - 1 downto 0);

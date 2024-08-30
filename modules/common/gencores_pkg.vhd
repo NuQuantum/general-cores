@@ -217,6 +217,7 @@ package gencores_pkg is
       cs_sel_i      : in  std_logic_vector(g_num_cs_select-1 downto 0);
       load_i        : in  std_logic;
       sclk_divsel_i : in  std_logic_vector(2 downto 0);
+      dac_sel_i     : in  std_logic_vector(2 downto 0);
       dac_cs_n_o    : out std_logic_vector(g_num_cs_select-1 downto 0);
       dac_sclk_o    : out std_logic;
       dac_sdata_o   : out std_logic;
