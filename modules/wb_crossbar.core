@@ -4,6 +4,8 @@ description: Wishbone crossbar
 
 filesets:
   rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
     files:
       - wishbone/wb_crossbar/sdb_rom.vhd
       - wishbone/wb_crossbar/xwb_crossbar.vhd

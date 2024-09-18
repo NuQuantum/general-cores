@@ -4,6 +4,8 @@ description: Wishbone Clock Monitor
 
 filesets:
   rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
     files:
       - wishbone/wb_clock_monitor/clock_monitor_wbgen2_pkg.vhd
       - wishbone/wb_clock_monitor/clock_monitor_wb.vhd

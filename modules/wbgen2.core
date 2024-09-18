@@ -5,11 +5,11 @@ description: wbgen2 stuff
 filesets:
   rtl:
     files:
+      - wishbone/wbgen2/wbgen2_pkg.vhd
       - wishbone/wbgen2/wbgen2_dpssram.vhd
       - wishbone/wbgen2/wbgen2_eic.vhd
       - wishbone/wbgen2/wbgen2_fifo_async.vhd
       - wishbone/wbgen2/wbgen2_fifo_sync.vhd
-      - wishbone/wbgen2/wbgen2_pkg.vhd
     file_type: vhdlSource
 
 targets:
