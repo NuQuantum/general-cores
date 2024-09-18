@@ -4,6 +4,8 @@ description: Onewire Master
 
 filesets:
   rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
     files:
       - wishbone/wb_onewire_master/sockit_owm.v: {file_type: verilogSource}
       - wishbone/wb_onewire_master/wb_onewire_master.vhd: {file_type: vhdlSource}

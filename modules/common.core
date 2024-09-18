@@ -17,13 +17,13 @@ filesets:
       - common/gc_reset.vhd
       - common/gc_reset_multi_aasd.vhd
       - common/gc_serial_dac.vhd
-      - common/gc_sync_ffs.vhd
-      - common/gc_arbitrated_mux.vhd
       - common/gc_sync_register.vhd
       - common/gc_sync.vhd
+      - common/gc_edge_detect.vhd
+      - common/gc_sync_ffs.vhd
+      - common/gc_arbitrated_mux.vhd
       - common/gc_posedge.vhd
       - common/gc_negedge.vhd
-      - common/gc_edge_detect.vhd
       - common/gc_pulse_synchronizer.vhd
       - common/gc_pulse_synchronizer2.vhd
       - common/gc_frequency_meter.vhd

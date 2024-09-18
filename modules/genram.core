@@ -20,6 +20,7 @@ filesets:
       - ohwr:general-cores:genram_pkg
       - ohwr:general-cores:memory_loader_pkg
     files:
+      - genrams/xilinx/generic_dpram.vhd
       - genrams/cheby/cheby_pkg.vhd
       - genrams/cheby/cheby_dpssram.vhd
     file_type: vhdlSource
@@ -57,7 +58,7 @@ filesets:
       - genrams/generic/generic_sync_fifo.vhd
       - genrams/generic/generic_async_fifo_mixedw.vhd
     file_type: vhdlSource
-  
+
 targets:
   default: &default
     filesets:
