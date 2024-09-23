@@ -1,0 +1,11 @@
+---
+# SPDX-FileCopyrightText: 2024 CERN (home.cern)
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+version: 1.0.0
+name: Platform-independent core collection
+description: https://ohwr.org/project/general-cores/wikis/home
+website: https://ohwr.org/project/general-cores
+documentation: https://ohwr.org/project/general-cores/wikis
+issues: https://ohwr.org/project/general-cores/issues
