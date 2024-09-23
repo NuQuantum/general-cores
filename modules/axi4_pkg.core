@@ -4,6 +4,8 @@ description: axi4 VHDL Package
 
 filesets:
   rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
     files:
       - axi/axi4_pkg.vhd
     file_type: vhdlSource
