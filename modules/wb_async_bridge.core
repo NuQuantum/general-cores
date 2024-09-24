@@ -1,0 +1,19 @@
+CAPI=2:
+name: ohwr:general-cores:wb_async_bridge
+description: Wishbone VHDL Files
+
+filesets:
+  rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
+    files:
+      - wishbone/wb_async_bridge/wb_async_bridge.vhd
+      - wishbone/wb_async_bridge/xwb_async_bridge.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
+      

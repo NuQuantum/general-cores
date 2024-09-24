@@ -1,0 +1,14 @@
+CAPI=2:
+name: ohwr:general-cores:wbgen2_pkg
+
+filesets:
+  rtl:
+    files:
+      - wishbone/wbgen2/wbgen2_pkg.vhd
+    file_type: vhdlSource
+
+targets:
+  default:
+    filesets:
+      - rtl
+      

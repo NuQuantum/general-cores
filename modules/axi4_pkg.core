@@ -1,0 +1,18 @@
+CAPI=2:
+name: ohwr:general-cores:axi4_pkg
+description: axi4 VHDL Package
+
+filesets:
+  rtl:
+    depend:
+      - ohwr:general-cores:wishbone_pkg
+    files:
+      - axi/axi4_pkg.vhd
+    file_type: vhdlSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+
+
