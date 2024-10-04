@@ -179,6 +179,7 @@ architecture syn of generic_dpram_inst_7series is
       when  3 to  4 => ret :=  8192;
       when  2       => ret := 16384;
       when  1       => ret := 32768;
+      when others   => assert FALSE report "f_lookup_bram_depth invalid data_width";
     end case;
 
     if f_lookup_bram_size = "18Kb" then
@@ -199,6 +200,7 @@ architecture syn of generic_dpram_inst_7series is
       when  3 to  4 => ret := 1;
       when  2       => ret := 1;
       when  1       => ret := 1;
+      when others   => assert FALSE report "f_lookup_bram_web_size invalid data_width";
     end case;
     return ret;
   end f_lookup_bram_web_size;

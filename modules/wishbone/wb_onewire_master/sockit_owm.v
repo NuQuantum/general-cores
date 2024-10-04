@@ -65,27 +65,29 @@ module sockit_owm #(
 `else
   parameter BAW   = 1,  // TODO, the above is correct, but does not work well with Altera SOPC Builder
 `endif
-  // base time period
-  parameter BTP_N = "5.0", // normal    mode (5.0us, options are "7.5", "5.0" and "6.0")
-  parameter BTP_O = "0.5", // overdrive mode (1.0us, options are "1.0",       and "0.5")
+  // base time period - specified in units (us/10). Integer values are preferred since 
+  // setting string parameters when instancing this module in VHDL does not work on 
+  // Xcelium
+  parameter BTP_N = 50, // normal    mode (5.0us, options are 75, 50 and 60)
+  parameter BTP_O = 5,  // overdrive mode (1.0us, options are 10, and 5)
   // normal mode timing
-  parameter T_RSTH_N = (BTP_N == "7.5") ?  64 : (BTP_N == "5.0") ?  96 :  80,  // reset high
-  parameter T_RSTL_N = (BTP_N == "7.5") ?  64 : (BTP_N == "5.0") ?  96 :  80,  // reset low
-  parameter T_RSTP_N = (BTP_N == "7.5") ?  10 : (BTP_N == "5.0") ?  15 :  10,  // reset presence pulse
-  parameter T_DAT0_N = (BTP_N == "7.5") ?   8 : (BTP_N == "5.0") ?  12 :  10,  // bit 0 low
-  parameter T_DAT1_N = (BTP_N == "7.5") ?   1 : (BTP_N == "5.0") ?   1 :   1,  // bit 1 low
-  parameter T_BITS_N = (BTP_N == "7.5") ?   2 : (BTP_N == "5.0") ?   3 :   2,  // bit sample
-  parameter T_RCVR_N = (BTP_N == "7.5") ?   1 : (BTP_N == "5.0") ?   1 :   1,  // recovery
-  parameter T_IDLE_N = (BTP_N == "7.5") ? 128 : (BTP_N == "5.0") ? 200 : 160,  // idle timer
+  parameter T_RSTH_N = (BTP_N == 75) ?  64 : (BTP_N == 50) ?  96 :  80,  // reset high
+  parameter T_RSTL_N = (BTP_N == 75) ?  64 : (BTP_N == 50) ?  96 :  80,  // reset low
+  parameter T_RSTP_N = (BTP_N == 75) ?  10 : (BTP_N == 50) ?  15 :  10,  // reset presence pulse
+  parameter T_DAT0_N = (BTP_N == 75) ?   8 : (BTP_N == 50) ?  12 :  10,  // bit 0 low
+  parameter T_DAT1_N = (BTP_N == 75) ?   1 : (BTP_N == 50) ?   1 :   1,  // bit 1 low
+  parameter T_BITS_N = (BTP_N == 75) ?   2 : (BTP_N == 50) ?   3 :   2,  // bit sample
+  parameter T_RCVR_N = (BTP_N == 75) ?   1 : (BTP_N == 50) ?   1 :   1,  // recovery
+  parameter T_IDLE_N = (BTP_N == 75) ? 128 : (BTP_N == 50) ? 200 : 160,  // idle timer
   // overdrive mode timing
-  parameter T_RSTH_O = (BTP_O == "1.0") ?  48 :  96,  // reset high
-  parameter T_RSTL_O = (BTP_O == "1.0") ?  48 :  96,  // reset low
-  parameter T_RSTP_O = (BTP_O == "1.0") ?  10 :  15,  // reset presence pulse
-  parameter T_DAT0_O = (BTP_O == "1.0") ?   6 :  12,  // bit 0 low
-  parameter T_DAT1_O = (BTP_O == "1.0") ?   1 :   2,  // bit 1 low
-  parameter T_BITS_O = (BTP_O == "1.0") ?   2 :   3,  // bit sample
-  parameter T_RCVR_O = (BTP_O == "1.0") ?   2 :   4,  // recovery
-  parameter T_IDLE_O = (BTP_O == "1.0") ?  96 : 192,  // idle timer
+  parameter T_RSTH_O = (BTP_O == 10) ?  48 :  96,  // reset high
+  parameter T_RSTL_O = (BTP_O == 10) ?  48 :  96,  // reset low
+  parameter T_RSTP_O = (BTP_O == 10) ?  10 :  15,  // reset presence pulse
+  parameter T_DAT0_O = (BTP_O == 10) ?   6 :  12,  // bit 0 low
+  parameter T_DAT1_O = (BTP_O == 10) ?   1 :   2,  // bit 1 low
+  parameter T_BITS_O = (BTP_O == 10) ?   2 :   3,  // bit sample
+  parameter T_RCVR_O = (BTP_O == 10) ?   2 :   4,  // recovery
+  parameter T_IDLE_O = (BTP_O == 10) ?  96 : 192,  // idle timer
   // clock divider ratios (defaults are for a 1MHz clock)
   parameter CDR_N = 5-1,  // normal    mode
   parameter CDR_O = 1-1   // overdrive mode
@@ -110,7 +112,7 @@ module sockit_owm #(
 // local parameters
 //////////////////////////////////////////////////////////////////////////////
 
-function integer clogb2;               
+function integer clogb2;
 input [31:0] value;
 begin
    for (clogb2 = 0; value > 0; clogb2 = clogb2 + 1)
@@ -323,14 +325,14 @@ generate if (OWN>1) begin : sel_implementation
   always @ (posedge clk, posedge rst)
   if (rst)                   owr_sel <= {SDW{1'b0}};
   else if (bus_wen_pwr_sel)  owr_sel <= bus_wdt[(BDW==32 ?  8 : 0)+:SDW];
-  
+
   // power delivery
   always @ (posedge clk, posedge rst)
   if (rst)                   owr_pwr <= {OWN{1'b0}};
   else if (bus_wen_pwr_sel)  owr_pwr <= bus_wdt[(BDW==32 ? 16 : 4)+:OWN];
 end else begin
   // port select
-  initial                    owr_sel <= 'd0; 
+  initial                    owr_sel <= 'd0;
   // power delivery
   always @ (posedge clk, posedge rst)
   if (rst)                   owr_pwr <= 1'b0;
@@ -346,8 +348,8 @@ assign bus_irq = irq_ena & irq_sts;
 
 // interrupt enable
 always @ (posedge clk, posedge rst)
-if (rst)                   irq_ena <= 1'b0;     
-else if (bus_wen_ctl_sts)  irq_ena <= bus_wdt[7]; 
+if (rst)                   irq_ena <= 1'b0;
+else if (bus_wen_ctl_sts)  irq_ena <= bus_wdt[7];
 
 // transmit status (active after onewire cycle ends)
 always @ (posedge clk, posedge rst)
@@ -362,7 +364,7 @@ end
 // onewire state machine
 //////////////////////////////////////////////////////////////////////////////
 
-assign req_ovd = OVD_E ? bus_wen_ctl_sts & bus_wdt[2] : 1'b0; 
+assign req_ovd = OVD_E ? bus_wen_ctl_sts & bus_wdt[2] : 1'b0;
 
 // overdrive
 always @ (posedge clk, posedge rst)
