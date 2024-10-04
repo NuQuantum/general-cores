@@ -107,10 +107,19 @@ architecture arch of inferred_async_fifo_dual_rst is
     bin_x, gray_x   : t_counter;
   end record;
 
+  -- Initialisation value for t_counter_block types. (others => (others => '0')) syntax
+  -- does not run on Xcelium
+  constant init_t_counter_block : t_counter_block := (bin => (others=>'0'),
+                                                      bin_next  => (others=>'0'),
+                                                      gray => (others=>'0'),
+                                                      gray_next  => (others=>'0'),
+                                                      bin_x => (others=>'0'),
+                                                      gray_x   => (others=>'0'));
+
   type t_mem_type is array (0 to g_size-1) of std_logic_vector(g_data_width-1 downto 0);
   signal mem : t_mem_type := (others => (others => '0'));
 
-  signal rcb, wcb : t_counter_block := (others =>(others => '0'));
+  signal rcb, wcb : t_counter_block := init_t_counter_block;
 
   attribute ram_type : string;
   attribute ram_type of mem : signal is g_memory_implementation_hint;

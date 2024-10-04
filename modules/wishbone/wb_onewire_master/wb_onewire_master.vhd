@@ -11,7 +11,7 @@
 -------------------------------------------------------------------------------
 -- Description: Wishbone Dallas/Maxim Semiconductor 1-Wire master.
 -------------------------------------------------------------------------------
--- 
+--
 -- Based on sockit_owm project Copyright (c) 2010 Iztok Jeras.
 -- http://opencores.org/project,sockit_owm
 --
@@ -39,11 +39,11 @@ entity wb_onewire_master is
     g_interface_mode      : t_wishbone_interface_mode      := CLASSIC;
     g_address_granularity : t_wishbone_address_granularity := WORD;
     g_num_ports           : integer                        := 1;
-    g_ow_btp_normal       : string                         := "5.0";
-    g_ow_btp_overdrive    : string                         := "1.0";
+    g_ow_btp_normal       : integer                         := 50;
+    g_ow_btp_overdrive    : integer                         := 10;
     g_CDR_N               : integer                        := 4; -- normal    mode
     g_CDR_O               : integer                        := 0  -- overdrive mode
-    );  
+    );
 
   port (
     clk_sys_i : in std_logic;
@@ -73,8 +73,8 @@ architecture rtl of wb_onewire_master is
 
   component sockit_owm
     generic(
-      BTP_N : string;
-      BTP_O : string;
+      BTP_N : integer;
+      BTP_O : integer;
       OWN   : integer;
       CDR_N : integer;
       CDR_O : integer);
@@ -105,7 +105,7 @@ architecture rtl of wb_onewire_master is
   signal adp_in  : t_wishbone_master_in;
 
   signal rdat_int : std_logic_vector(31 downto 0);
-  
+
 begin  -- rtl
 
   slave_in.adr(2 downto 0)                          <= wb_adr_i;
@@ -138,7 +138,7 @@ begin  -- rtl
       master_i => adp_in,
       master_o => adp_out);
 
-  
+
   bus_wen <= adp_out.cyc and adp_out.stb and adp_out.we and not adp_in.ack;
   bus_ren <= adp_out.cyc and adp_out.stb and not (adp_out.we or adp_in.ack);
 
