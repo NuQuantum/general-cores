@@ -15,8 +15,8 @@ entity xwb_onewire_master is
     g_interface_mode      : t_wishbone_interface_mode      := CLASSIC;
     g_address_granularity : t_wishbone_address_granularity := WORD;
     g_num_ports           : integer                        := 1;
-    g_ow_btp_normal       : string                         := "5.0";
-    g_ow_btp_overdrive    : string                         := "1.0";
+    g_ow_btp_normal       : integer                        := 50;
+    g_ow_btp_overdrive    : integer                        := 10;
     g_CDR_N               : integer                        := 4; -- normal    mode
     g_CDR_O               : integer                        := 0  -- overdrive mode
     );
@@ -74,5 +74,5 @@ begin  -- rtl
   slave_o.rty <= '0';
 
   desc_o <= (others => '0');
-  
+
 end rtl;
