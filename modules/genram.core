@@ -15,6 +15,7 @@ filesets:
       - genrams/common/inferred_async_fifo.vhd
       - genrams/common/generic_shiftreg_fifo.vhd
     file_type: vhdlSource
+
   cheby:
     depend:
       - ohwr:general-cores:genram_pkg
@@ -24,6 +25,7 @@ filesets:
       - genrams/cheby/cheby_pkg.vhd
       - genrams/cheby/cheby_dpssram.vhd
     file_type: vhdlSource
+
   virtex6:
     depend:
       - ohwr:general-cores:genram_pkg
@@ -35,6 +37,7 @@ filesets:
       - genrams/xilinx/virtex6/generic_async_fifo_dual_rst.vhd
       - genrams/xilinx/virtex6/generic_sync_fifo.vhd
     file_type: vhdlSource
+
   xilinx:
     depend:
       - ohwr:general-cores:genram_pkg
@@ -48,6 +51,7 @@ filesets:
       - genrams/xilinx/generic_spram.vhd
       - genrams/xilinx/gc_shiftreg.vhd
     file_type: vhdlSource
+
   generic:
     depend:
       - ohwr:general-cores:genram_pkg
@@ -62,9 +66,8 @@ filesets:
 targets:
   default: &default
     filesets:
+      # Only support for Xilinx targets currently.
       - common
       - cheby
-      - tool_vivado ? (xilinx)
-      - tool_ise ? (xilinx)
-      - tool_ise ? (virtex6)
-      - "!tool_ise ? (generic)"
+      - generic
+      - xilinx
