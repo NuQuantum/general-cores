@@ -76,7 +76,7 @@ architecture behav of tb_gc_i2c_slave is
   --============================================================================
   -- Constant declarations
   --============================================================================
-  constant c_clk_per : time := 50 ns;
+  constant c_clk_per : time := 8 ns;
   constant c_reset_width : time := 31 ns;
 
   --============================================================================
@@ -207,15 +207,15 @@ begin
       sda_o         => sda_fr_slv,
       sda_en_o      => sda_en_slv,
 
-      addr_i        => addr,
+      i2c_addr_i        => addr,
 
       ack_i         => slv_ack,
 
       tx_byte_i     => txb,
       rx_byte_o     => rxb,
 
-      sta_p_o       => slv_sta_p,
-      sto_p_o       => slv_sto_p,
+      i2c_sta_p_o       => slv_sta_p,
+      i2c_sto_p_o       => slv_sto_p,
       addr_good_p_o => slv_addr_good_p,
       r_done_p_o    => slv_r_done_p,
       w_done_p_o    => slv_w_done_p,
@@ -274,7 +274,7 @@ begin
                 '1';
 
   -- STIMULI
-  addr <= "1011110";
+  addr <= "1010000";
 
   -- I2C SLAVE FSM
   p_slv_fsm: process (clk) is
